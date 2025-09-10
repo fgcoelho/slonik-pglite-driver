@@ -1,63 +1,57 @@
-import { MemoryFS, PGlite } from "@electric-sql/pglite";
+import type { PGlite } from "@electric-sql/pglite";
 import type { DriverCommand, DriverFactory } from "@slonik/driver";
 import { createDriverFactory } from "@slonik/driver";
 
-export const createPGLiteDriverFactory = (): DriverFactory =>
-	createDriverFactory(async () => {
-		const client = new PGlite({
-			fs: new MemoryFS(),
-		});
+export const createPGLiteDriverFactory = (pg: PGlite): DriverFactory =>
+	createDriverFactory(async () => ({
+		async createPoolClient({ clientEventEmitter }) {
+			let connected = false;
 
-		return {
-			async createPoolClient({ clientEventEmitter }) {
-				let connected = false;
+			const connect = async () => {
+				if (!connected) {
+					connected = true;
+				}
+			};
 
-				const connect = async () => {
-					if (!connected) {
-						connected = true;
-					}
-				};
+			const end = async () => {
+				if (connected) {
+					connected = false;
+				}
+			};
 
-				const end = async () => {
-					if (connected) {
-						connected = false;
-					}
-				};
+			const query = async (sql: string, values?: unknown[]) => {
+				try {
+					const result = await pg.query(sql, values ?? []);
 
-				const query = async (sql: string, values?: unknown[]) => {
-					try {
-						const result = await client.query(sql, values ?? []);
+					const rows: any[] = (result as any).rows ?? [];
+					const rowCount: number =
+						(result.rows.length ? result.rows.length : result.affectedRows) ??
+						0;
 
-						const rows: any[] = (result as any).rows ?? [];
-						const rowCount: number =
-							(result.rows.length ? result.rows.length : result.affectedRows) ??
-							0;
+					return {
+						command: (result as any).command as DriverCommand,
+						fields: result.fields.map((field) => ({
+							dataTypeId: field.dataTypeID,
+							name: field.name,
+						})),
+						rowCount,
+						rows,
+					};
+				} catch (error) {
+					clientEventEmitter.emit("error", error);
+					throw error;
+				}
+			};
 
-						return {
-							command: (result as any).command as DriverCommand,
-							fields: result.fields.map((field) => ({
-								dataTypeId: field.dataTypeID,
-								name: field.name,
-							})),
-							rowCount,
-							rows,
-						};
-					} catch (error) {
-						clientEventEmitter.emit("error", error);
-						throw error;
-					}
-				};
+			const stream = (_: string, __?: unknown[]) => {
+				throw new Error("PGlite driver: stream() is not supported yet.");
+			};
 
-				const stream = (_: string, __?: unknown[]) => {
-					throw new Error("PGlite driver: stream() is not supported yet.");
-				};
-
-				return {
-					connect,
-					end,
-					query,
-					stream,
-				};
-			},
-		};
-	});
+			return {
+				connect,
+				end,
+				query,
+				stream,
+			};
+		},
+	}));

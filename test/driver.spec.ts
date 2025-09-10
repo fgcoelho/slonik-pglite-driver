@@ -1,3 +1,4 @@
+import { PGlite } from "@electric-sql/pglite";
 import { createPool, type DatabasePool, sql } from "slonik";
 import { createPGLiteDriverFactory } from "slonik-pglite-driver";
 import { beforeAll, beforeEach, describe, expect, it } from "vitest";
@@ -6,8 +7,10 @@ describe("query", () => {
 	let db: DatabasePool;
 
 	beforeAll(async () => {
+		const pglite = new PGlite();
+
 		db = await createPool("postgresql://", {
-			driverFactory: createPGLiteDriverFactory(),
+			driverFactory: createPGLiteDriverFactory(pglite),
 		});
 
 		await db.query(sql.unsafe`drop table if exists test;`);
