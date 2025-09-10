@@ -19,15 +19,15 @@
 		"pglite"
 	],
 	"type": "module",
-	"main": "./dist/core/core.cjs",
-	"types": "./dist/core/core.d.cts",
+	"main": "./dist/index.cjs",
+	"types": "./dist/index.d.cts",
 	"exports": {
-		".": "./dist/core/core.cjs"
+		".": "./dist/index.cjs"
 	},
 	"typesVersions": {
 		"*": {
 			".": [
-				"./dist/core/core.d.cts"
+				"./dist/index.d.cts"
 			]
 		}
 	},
