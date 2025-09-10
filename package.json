@@ -1,0 +1,67 @@
+{
+	"name": "slonik-pglite-driver",
+	"description": "slonik pglite driver",
+	"author": "Fernando Coelho",
+	"publishConfig": {
+		"access": "public"
+	},
+	"version": "0.0.1",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/fgcoelho/slonik-pglite-driver.git"
+	},
+	"files": [
+		"dist"
+	],
+	"keywords": [
+		"slonik",
+		"pglite"
+	],
+	"type": "module",
+	"main": "./dist/core/core.cjs",
+	"types": "./dist/core/core.d.cts",
+	"exports": {
+		".": "./dist/core/core.cjs"
+	},
+	"typesVersions": {
+		"*": {
+			".": [
+				"./dist/core/core.d.cts"
+			]
+		}
+	},
+	"scripts": {
+		"------------- toolchain -------------": "-------------",
+		"format": "biome format --write",
+		"lint": "biome lint --error-on-warnings",
+		"checktypes": "tsc --noEmit",
+		"check": "pnpm checktypes && pnpm lint",
+		"test": "vitest",
+		"------------- dev -------------": "-------------",
+		"dev": "pnpm tsup --env.mode dev",
+		"------------- build -------------": "-------------",
+		"build": "rm -rf dist && pnpm tsup --env.mode release",
+		"bundlesize": "pnpm build --metafile && npm pack --dry-run",
+		"bundlesize:dev": "pnpm tsup --metafile && npm pack --dry-run",
+		"------------- publishing -------------": "-------------",
+		"release": "pnpm check && pnpm build && pnpm publish --no-git-checks",
+		"release:rc": "pnpm check && pnpm build && pnpm version prerelease --preid=rc"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.2.3",
+		"@electric-sql/pglite": "^0.3.8",
+		"@types/node": "^22.9.1",
+		"@types/pg": "^8.15.5",
+		"esbuild": "^0.25.1",
+		"slonik": "^48.6.0",
+		"terser": "^5.39.0",
+		"tsup": "^8.3.5",
+		"typescript": "5.6.3",
+		"vite-tsconfig-paths": "^5.1.4",
+		"vitest": "3.2.4"
+	},
+	"dependencies": {
+		"@slonik/driver": "^48.6.0"
+	}
+}

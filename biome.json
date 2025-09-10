@@ -1,0 +1,75 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.2.3/schema.json",
+	"vcs": {
+		"enabled": false,
+		"clientKind": "git",
+		"useIgnoreFile": false
+	},
+	"files": {
+		"ignoreUnknown": false,
+		"includes": ["**", "!**/.tmp", "!**/assets"]
+	},
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab",
+		"includes": [
+			"**/*.ts",
+			"**/*.tsx",
+			"**/*.json",
+			"!**/.next",
+			"!**/dist",
+			"!**/node_modules"
+		]
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"style": {
+				"useTemplate": "off",
+				"noParameterAssign": "off"
+			},
+			"complexity": {
+				"useArrowFunction": "off"
+			},
+			"correctness": {
+				"noConstructorReturn": "off",
+				"noUnusedVariables": "off"
+			},
+			"suspicious": {
+				"noConfusingVoidType": "off",
+				"noEmptyInterface": "off",
+				"noExplicitAny": "off"
+			}
+		},
+		"includes": [
+			"**/*.ts",
+			"**/*.tsx",
+			"**/*.json",
+			"!**/.next",
+			"!**/dist",
+			"!**/node_modules",
+			"!**/eslint.config.ts"
+		]
+	},
+	"assist": {
+		"actions": { "recommended": false, "source": { "organizeImports": "on" } },
+		"includes": [
+			"**/*.ts",
+			"**/*.tsx",
+			"**/*.json",
+			"!**/.next",
+			"!**/dist",
+			"!**/node_modules",
+			"!**/eslint.config.ts"
+		]
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "double"
+		},
+		"parser": {
+			"unsafeParameterDecoratorsEnabled": true
+		}
+	}
+}

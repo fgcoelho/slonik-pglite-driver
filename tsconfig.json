@@ -1,0 +1,28 @@
+{
+	"compilerOptions": {
+		"target": "ES2022",
+		"module": "Preserve",
+		"moduleResolution": "bundler",
+		"isolatedModules": true,
+		"esModuleInterop": true,
+		"declaration": true,
+		"declarationDir": "./",
+		"incremental": true,
+		"tsBuildInfoFile": ".tsbuildinfo",
+		"strict": true,
+		"strictNullChecks": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"useUnknownInCatchVariables": false,
+		"noEmit": true,
+		"paths": {
+			"slonik-pglite-driver": ["./src/index.ts"]
+		},
+		"noImplicitAny": false,
+		"baseUrl": "./",
+		"outDir": "./dist",
+		"rootDir": "./"
+	},
+	"include": ["./src/**/*.ts", "./test/**/*.ts"],
+	"exclude": ["node_modules", "dist"]
+}
